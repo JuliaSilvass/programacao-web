@@ -1,0 +1,18 @@
+{
+  "name": "aula1",
+  "version": "1.0.0",
+  "description": "Atividade da primeira aula de prog. web 2",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Julia Silva",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "moment": "^2.30.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
