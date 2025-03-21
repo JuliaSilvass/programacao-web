@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Envio da mensagem da visita</h2>
+    <form action="/enviar" method="POST">
+        
+        
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required><br>
+        
+        <label for="mensagem">Mensagem:</label>
+        <textarea id="mensagem" name="mensagem" required></textarea><br>
+        
+        <button type="submit">Registrar minha visita</button>
+        
+    </form>
+    
+    <h2>Lista de mensagens de visita</h2>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>Mensagem</th>
+            <th>Data de registro</th>
+        </tr>
+    </table>
+    <p>
+        <a href="/">Voltar</a>
+    </p>
+</body>
+</html>
