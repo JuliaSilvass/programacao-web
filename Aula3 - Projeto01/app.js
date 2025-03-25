@@ -37,6 +37,19 @@ app.get('/relogio', function(req, res){
     res.sendFile(path.join(__dirname, '/public/relogio.html'))
 })
 
+app.get('/gerar-horario', function(req, res){
+    const date = new Date()
+
+    const horarios = {
+        novaYork: new Intl.DateTimeFormat("pt-BR", { timeZone: "America/New_York", hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(date),
+        costaRica: new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Costa_Rica", hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(date),
+        madrid: new Intl.DateTimeFormat("pt-BR", { timeZone: "Europe/Madrid", hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(date),
+        hongKong: new Intl.DateTimeFormat("pt-BR", { timeZone: "Asia/Hong_Kong", hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(date),
+        saoPaulo: new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(date)
+    }
+    res.json(horarios)
+})
+
 app.listen(3000, function(){
     console.log('Aplicação em execução em http://localhost:3000/')
 })
