@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>title</title>
+        <style>
+            /* Estilos CSS */   
+            body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            }
+            .header {
+            background-color: #1976D2;
+            padding: 10px;
+            text-align: center;
+            }
+            .footer {
+            background-color: #f0f0f0;
+            padding: 10px;
+            text-align: center;
+            }
+            .content {
+            display: flex;
+            }
+            .sidebar {
+            background-color: #f8f8f8;
+            width: 200px;
+            padding: 10px;
+            }
+            .main-content {
+            flex: 1;
+            padding: 10px;
+            }
+            li{
+            padding-top: 10px;
+            }
+
+            .sidebar a {
+            background-color: #f8f8f8;
+            color:black;
+            text-decoration: none;
+            }
+            .sidebar a:hover {
+            background-color: #f8f8f8;
+            color:rgb(34, 0, 255);
+            text-decoration: none;
+            }
+            #cabecalho-pagina{
+            width: 50%;
+            color: white;
+            }
+            .horizontal ul {
+                list-style: none; /* Remove os marcadores da lista */
+                padding: 0;
+                margin: 0;
+                display: flex; /* Exibe os itens em linha */
+                justify-content: space-around; /* Distribui os itens igualmente */
+                align-items: center;        
+                background-color: #f8f8f8;
+            }
+
+            .horizontal li {
+                padding: 10px;
+            }
+
+            .horizontal a {
+                text-decoration: none;
+                color: black;
+                padding: 10px 15px;
+                display: block; /* Ocupa todo o espaço do li */
+            }
+
+            .horizontal a:hover {
+                color: rgb(34, 0, 255);
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <div id="cabecalho-pagina">
+                <h1>Título</h1>
+            </div>
+        </div>
+            <div class="horizontal">
+
+                <!-- Seu menu horizontal -->
+                <ul>
+                    <li><a href="/">Página inicial</a></li>
+                    <li><a href="https://www.google.com/">Google</a></li>
+                    <li><a href="https://classroom.google.com/u/5/h">Classroom</a></li>
+                </ul>
+            </div>
+            
+        <div class="content">
+            <div class="sidebar">
+
+                <!-- Seu menu vertical -->
+                <ul>
+                    <li><a href="/exemplo-usuario">Exemplo usuário</a></li>
+                    <li><a href="/exemplo-usuario-complexo">Exemplo usuário complexo</a></li>
+                    <li><a href="/exemplo-array-usuarios">Exemplo array usuário</a></li>
+                    <li><a href="/operacoes-fundamentais/2/1">Operações fundamentais entre 2 e 1</a></li>
+                    <li><a href="/mostrar-dois-objetos">Mostrar dois objetos</a></li>
+                </ul>
+            </div>
+            <div class="main-content">
+                <!-- Área de conteúdo do site -->
+                <!-- O template preenchido pelo motor de templates entra aqui-->
+                {{{body}}}
+            </div>
+        </div>
+        <div class="footer">
+            Desenvolvido por Julia Silva nos laboratórios do IFSul Campus Bagé
+        </div>
+    </body>
+</html>

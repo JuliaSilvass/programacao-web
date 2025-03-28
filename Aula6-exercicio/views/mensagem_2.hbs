@@ -1,0 +1,11 @@
+<h3>Bom dia {{usuario_novo.nome}} </h3>
+<p>Enviamos uma mensagem SMS para o seu número {{usuario_novo.telefone}}, com o
+código de barras para o pagamento da sua compra.</p>
+<p>Enviaremos este mesmo código de barras para o pagamento para o seu e-mail:
+{{usuario_novo.email}}</p>
+<ul>
+<li>Rua: {{usuario_novo.endereco.rua}}, {{usuario_novo.endereco.numero}}</li>
+<li>Completo: {{usuario_novo.endereco.complemento}}</li>
+<li>Cidade: <b>{{usuario_novo.endereco.cidade}}</b></li>
+<li>Estado: {{usuario_novo.endereco.estado}}</li>
+</ul>
