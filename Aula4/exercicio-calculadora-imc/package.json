@@ -1,16 +1,16 @@
 {
-  "name": "aula3",
+  "name": "exercicio-calculadora-imc",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Julia silva, Mariane Mendeiros",
+  "author": "Julia Silva",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "bootstrap": "^5.3.3",
-    "ejs": "^3.1.10",
-    "express": "^4.21.2"
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.9"
   }
 }
