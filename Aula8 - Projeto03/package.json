@@ -10,6 +10,7 @@
   "description": "",
   "dependencies": {
     "express": "^5.1.0",
+    "express-handlebars": "^8.0.1",
     "handlebars": "^4.7.8",
     "nodemon": "^3.1.9",
     "pg": "^8.14.1"

@@ -1,0 +1,30 @@
+<form action="/tarefas" method="post">
+    <label for="nome">Nome:</label>
+    <br />
+    <input type="text" id="nome" name="nome" required>
+    <br>
+    <label for="descricao">Descrição:</label>
+    <br />
+    <textarea id="descricao" name="descricao" required rows="4"
+    cols="30"></textarea>
+    <br>
+    <label for="responsavel">Nome do Responsável:</label>
+    <br />
+    <input type="text" id="responsavel" name="responsavel" required>
+    <br>
+    <label for="status">Status:</label>
+    <br>
+    <select id="status" name="status" required>
+    <option value="criada">Criada</option>
+    <option value="iniciada">Iniciada</option>
+    <option value="concluida">Concluída</option>
+    <option value="cancelada">Cancelada</option>
+    </select>
+    <br>
+    <label for="data_termino">Data de Término Máxima:</label>
+    <br>
+    <input type="date" id="data_termino" name="data_termino" required>
+    <br>
+    <br>
+    <button type="submit">Cadastrar</button>
+</form>
