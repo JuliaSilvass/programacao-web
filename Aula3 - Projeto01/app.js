@@ -50,6 +50,24 @@ app.get('/gerar-horario', function(req, res){
     res.json(horarios)
 })
 
+app.get('/senha', function(req, res){
+    res.sendFile(path.join(__dirname, '/public/senha.html'))
+})
+
+app.get('/gerador-senhas/:tipoSenha', (req, res) => {
+
+    var tipoSenha = req.params.tipoSenha
+
+    if (tipoSenha == 'numero') {
+            
+    } else if (tipoSenha = 'letra') {
+        
+    } else {
+        
+    }
+    res.json({ mensagem: `Você escolheu: ${tipoSenha}` });
+  });
+
 app.listen(3000, function(){
     console.log('Aplicação em execução em http://localhost:3000/')
 })
