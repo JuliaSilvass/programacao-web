@@ -54,18 +54,54 @@ app.get('/senha', function(req, res){
     res.sendFile(path.join(__dirname, '/public/senha.html'))
 })
 
-app.get('/gerador-senhas/:tipoSenha', (req, res) => {
+app.get('/gerador-senhas/:tipoSenha/:tipoRetorno', (req, res) => {
 
     var tipoSenha = req.params.tipoSenha
+    var tipoRetorno = req.params.tipoRetorno
+    let senha = '';
+    const letras = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const numeros = '0123456789'
 
-    if (tipoSenha == 'numero') {
-            
-    } else if (tipoSenha = 'letra') {
-        
+    if (tipoSenha === 'numero') {
+        for (let i = 0; i < 6; i++) {
+            const indice = Math.floor(Math.random() * numeros.length)
+            senha += numeros[indice]  
+        }    
+    } else if (tipoSenha === 'letra') {
+        for(let i = 0; i < 6; i++){
+            const indice = Math.floor(Math.random() * letras.length)
+            senha += letras[indice]
+        }
     } else {
-        
+        for(let i = 0; i < 3; i++){
+            const indice = Math.floor(Math.random() * letras.length)
+            senha += letras[indice]
+        }
+        for (let i = 0; i < 3; i++) {
+            const indice = Math.floor(Math.random() * numeros.length)
+            senha += numeros[indice]   
+        }
+
+        senha = senha.split('').sort(() => 0.5 - Math.random()).join('')
     }
-    res.json({ mensagem: `Você escolheu: ${tipoSenha}` });
+    
+    if (tipoRetorno === 'tela') {
+        res.json({mensagem: `Esta é a senha gerada: ${senha}`})
+    } else if (tipoRetorno === 'xml') {
+        const dataHoje = new Date().toLocaleDateString('pt-BR');
+        const xml = `<?xml version="1.0" encoding="UTF-8"?>
+                        <retornoSite>
+                        <tipo>${tipoSenha}</tipo>
+                        <senha data="${dataHoje}">${senha}</senha>
+                        </retornoSite>`
+                        
+        res.set('Content-Type', 'application/xml');
+        res.setHeader('Content-Disposition', 'attachment; filename="senha.xml"');
+        res.send(xml);
+    } else {
+        res.status(400).json({ erro: 'Tipo de retorno inválido' });
+    }
+
   });
 
 app.listen(3000, function(){

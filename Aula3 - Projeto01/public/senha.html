@@ -10,16 +10,33 @@
 
     <div class="container text-center">
         <h1>Gerador de senha</h1>
-        <br><br>
-        <h3>Escolha o tipo de senha que deseja</h3>
-        <br><br>
 
-        <button onclick="escolher('numero')">Números</button><br><br>
-        <button onclick="escolher('letra')">Letras</button><br><br>
-        <button onclick="escolher('alfanum')">Alfanumérica</button><br><br>
-        <br>
+        <form id="formSenha" class="p-4 border rounded bg-white shadow">
+            <h2 class="mb-4">Escolha o tipo de senha e retorno que deseja</h2>
+        
+            <div class="mb-3">
+              <label for="tipoSenha" class="form-label">Tipo de senha:</label>
+              <select id="tipoSenha" class="form-select" required>
+                <option value="numero">Somente Números</option>
+                <option value="letra">Somente Letras</option>
+                <option value="alfanum">Alfanumérica (3 letras + 3 números)</option>
+              </select>
+            </div>
+        
+            <div class="mb-3">
+              <label for="retorno" class="form-label">Tipo de retorno:</label>
+              <select id="retorno" class="form-select" required>
+                <option value="tela">Exibir na Tela</option>
+                <option value="xml">XML</option>
+              </select>
+            </div>
+        
+            <button type="submit" class="btn btn-primary w-100">Gerar</button>
+        
+            <div id="resultado" class="mt-4 text-center fw-bold"></div>
+          </form>
 
-        <p id="resposta"></p>
+        <p id="resposta" class="mt-4 fw-bold text-danger text-center"></p>
 
         <a href="/">Voltar </a>
     </div>
