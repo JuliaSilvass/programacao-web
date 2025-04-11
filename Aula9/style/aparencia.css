@@ -1,0 +1,44 @@
+/* Definição do fundo do site */
+body {
+    background-color: beige;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+/* Estilização do formulário */
+form {
+    background-color: rgba(248, 173, 186, 0.403);
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+}
+
+label {
+    color: navy;
+    font-weight: bold;
+}
+
+/* Estilização da tabela de mensagens */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Estilização das mensagens na listagem */
+tbody tr {
+    background-color: lightgray;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+}

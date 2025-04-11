@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="aparencia.css">
+    <title>Administradores</title>
+</head>
+<body>
+    <h2>Lista de mensagens de visita</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Codigo</th>
+                <th>Nome</th>
+                <th>Mensagem</th>
+                <th>Data de registro</th>
+                <th>Apro/Repr</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-visitas">
+            <!-- Os dados das visitas serão inseridos aqui -->
+        </tbody>
+    </table>
+    <p>
+        <a href="/">Voltar</a>
+    </p>
+
+    <script>
+        async function carregarVisitas() {
+            try {
+                const response = await fetch('/api/adm')
+                const visitas = await response.json()
+
+                const tabela = document.getElementById('tabela-visitas')
+                tabela.innerHTML = '' 
+
+                visitas.forEach(visita => {
+                    const row = `<tr>
+                                    <td>${visita.codigo}</td>
+                                    <td>${visita.nome}</td>
+                                    <td>${visita.mensagem}</td>
+                                    <td>${visita.data}</td>
+                                    <td>
+                                        <button onclick = "atualizarStatus(${visita.codigo}, 'aprovada')">Aprovar</button> 
+                                        <button onclick="atualizarStatus(${visita.codigo}, 'reprovada')">Reprovar</button>
+                                    </td>
+                                </tr>`
+                    tabela.innerHTML += row
+                })
+            } catch (error) {
+                console.error('Erro ao carregar visitas:', error)
+            }
+        }
+
+        async function atualizarStatus(codigo, status) {
+            try {
+                const response = await fetch('/atualizar-status', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `codigo=${codigo}&status=${status}`
+                });
+
+                if (response.ok) {
+                    alert(`Mensagem ${status}!`);
+                    carregarVisitas(); // atualiza a tabela
+                } else {
+                    alert('Erro ao atualizar status.');
+                }
+            } catch (err) {
+                console.error('Erro na requisição:', err);
+            }
+        }
+
+
+
+        window.onload = carregarVisitas
+    </script>
+</body>
+</html>
