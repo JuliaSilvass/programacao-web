@@ -11,10 +11,10 @@
 
     <form action="/process-form" method="post">
         <p>Altura(m): </p>
-        <input type="number" name="altura" id="altura">
+        <input type="number" name="altura" id="altura" step="0.01" required>
 
         <p>Peso(kg): </p>
-        <input type="number" name="peso" id="peso">
+        <input type="number" name="peso" id="peso" step="0.01" required>
         <!-- botão Calcular -->
         <br><br>
         <button type="submit">Calcular IMC</button>
