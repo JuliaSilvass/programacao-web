@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Votar</title>
+</head>
+<body>
+  <h1>Votação</h1>
+
+  <form id="form-voto" action="/inserir-voto" method="POST">
+    <label for="numero-eleitor">Número do Eleitor:</label><br>
+    <input type="text" id="numero-eleitor" name="numeroEleitor" required /><br><br>
+
+    <fieldset>
+      <legend>Escolha um candidato:</legend>
+      <div id="lista-candidatos">
+        <!-- Radio buttons dos candidatos serão inseridos aqui -->
+      </div>
+    </fieldset>
+
+    <br>
+    <button type="submit">Registrar Voto</button>
+  </form>
+
+  <script>
+    async function carregarCandidatos() {
+      try {
+        const res = await fetch('/candidato/dados')
+        const candidatos = await res.json()
+        const div = document.getElementById('lista-candidatos')
+        div.innerHTML = ''
+
+        candidatos.forEach(candidato => {
+          const radio = document.createElement('input')
+          radio.type = 'radio'
+          radio.name = 'candidato'
+          radio.value = candidato.numero_partido
+          radio.id = 'cand-' + candidato.numero_partido
+
+          const label = document.createElement('label')
+          label.htmlFor = radio.id
+          label.textContent = candidato.nome
+
+          const container = document.createElement('div')
+          container.appendChild(radio)
+          container.appendChild(label)
+
+          div.appendChild(container)
+        });
+      } catch (err) {
+        console.error('Erro ao carregar candidatos:', err)
+      }
+    }
+
+    window.onload = carregarCandidatos
+  </script>
+</body>
+</html>

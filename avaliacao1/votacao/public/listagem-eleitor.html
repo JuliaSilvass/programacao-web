@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de eleitores</title>
+</head>
+<body>
+    <h1>Sistema de votação web</h1>
+    <h2>Lista de eleitores</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Número eleitor</th>
+                <th>Nome</th>
+                <th>Data de nascimento</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-eleitores">
+            <!-- Os dados dos eleitores serão inseridos aqui -->
+        </tbody>
+    </table>
+    <p>
+        <a href="/administrador">Voltar</a>
+    </p>
+
+    <script>
+        async function carregarEleitor() {
+            try {
+                const response = await fetch('/eleitor/dados')
+                const eleitor = await response.json()
+
+                const tabela = document.getElementById('tabela-eleitores')
+                tabela.innerHTML = '' 
+
+                eleitor.forEach(eleitor => {
+                    const row = `<tr>
+                                    <td>${eleitor.numero_eleitor}</td>
+                                    <td>${eleitor.nome}</td>
+                                    <td>${eleitor.data_nascimento}</td>
+                                </tr>`
+                    tabela.innerHTML += row
+                })
+            } catch (error) {
+                console.error('Erro ao carregar eleitores:', error)
+            }
+        }
+
+
+        window.onload = carregarEleitor
+    </script>
+</body>
+</html>

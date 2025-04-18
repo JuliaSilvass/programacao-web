@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro de Eleitor</title>
+</head>
+<body>
+
+  <h1>Cadastro de Eleitor(a)</h1>
+
+  <form action="/pagina-alvo-dados" method="POST">
+
+    <label for="numero_eleitor">Número de Eleitor (5 dígitos):</label><br>
+    <input type="text" id="numero_eleitor" name="numero_eleitor" pattern="\d{5}" maxlength="5" required size="5"><br><br>
+
+    <label for="nome">Nome:</label><br>
+    <input type="text" id="nome" name="nome" required size="60"><br><br>
+
+    <label for="senha">Senha (10 caracteres):</label><br>
+    <input type="password" id="senha" name="senha" pattern=".{10}" maxlength="10" required size="10"><br><br>
+
+    <label for="data_nascimento">Data de Nascimento:</label><br>
+    <input type="date" id="data_nascimento" name="data_nascimento" required><br><br>
+
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <br />
+  <a href="/administrador">Voltar</a> 
+  
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Candidatos </title>
+</head>
+<body>
+    <h1>Sistema de votação web</h1>
+    <h2>Lista de Candidatos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Número do partido</th>
+                <th>Nome</th>
+                <th>Operações</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-candidato">
+            <!-- Os dados dos candidatos serão inseridos aqui -->
+        </tbody>
+    </table>
+    <p>
+        <a href="/administrador">Voltar</a>
+    </p>
+
+    <script>
+        async function carregarCandidato() {
+            try {
+                const response = await fetch('/candidato/dados')
+                const candidato = await response.json()
+
+                const tabela = document.getElementById('tabela-candidato')
+                tabela.innerHTML = '' 
+
+                candidato.forEach(candidato => {
+                    const row = `<tr>
+                                    <td>${candidato.numero_partido}</td>
+                                    <td>${candidato.nome}</td>
+                                    <td><a href="/candidato/excluir/${candidato.nome}">Excluir</a></td>
+                                </tr>`
+                    tabela.innerHTML += row
+                })
+            } catch (error) {
+                console.error('Erro ao carregar candidatos:', error)
+            }
+        }
+
+
+        window.onload = carregarCandidato
+    </script>
+</body>
+</html>
