@@ -10,7 +10,7 @@
 
   <form id="form-voto" action="/inserir-voto" method="POST">
     <label for="numero-eleitor">Número do Eleitor:</label><br>
-    <input type="text" id="numero-eleitor" name="numeroEleitor" required /><br><br>
+    <input type="text" id="numero-eleitor" name="numero_eleitor" required /><br><br>
 
     <fieldset>
       <legend>Escolha um candidato:</legend>
@@ -32,26 +32,33 @@
         div.innerHTML = ''
 
         candidatos.forEach(candidato => {
-          const radio = document.createElement('input')
-          radio.type = 'radio'
-          radio.name = 'candidato'
-          radio.value = candidato.numero_partido
-          radio.id = 'cand-' + candidato.numero_partido
+          div.appendChild(criarOpcao(candidato.nome, candidato.numero_partido))
+        })
 
-          const label = document.createElement('label')
-          label.htmlFor = radio.id
-          label.textContent = candidato.nome
+        div.appendChild(criarOpcao('Branco', 'BR'))
+        div.appendChild(criarOpcao('Nulo', 'NU'))
 
-          const container = document.createElement('div')
-          container.appendChild(radio)
-          container.appendChild(label)
-
-          div.appendChild(container)
-        });
       } catch (err) {
         console.error('Erro ao carregar candidatos:', err)
       }
     }
+
+    function criarOpcao(nome, valor) {
+    const radio = document.createElement('input')
+    radio.type = 'radio'
+    radio.name = 'numero_partido'
+    radio.value = valor
+    radio.id = 'cand-' + valor
+
+    const label = document.createElement('label')
+    label.htmlFor = radio.id
+    label.textContent = nome
+
+    const container = document.createElement('div')
+    container.append(radio, label)
+
+    return container
+  }
 
     window.onload = carregarCandidatos
   </script>

@@ -138,18 +138,67 @@ app.get('/votar', function (req, res){
 })
 
 app.post('/inserir-voto', function(req, res){
-    const { } = req.body
+    const { numero_eleitor, numero_partido } = req.body
 
-    pool.query(`INSERT INTO eleitores (numero_eleitor, nome, senha, data_nascimento) VALUES ('${numero_eleitor}', '${nome}', '${senha}', '${data_nascimento}')`, function(error, results, fields){
+    pool.query(`INSERT INTO votos(numero_eleitor, numero_partido) VALUES ('${numero_eleitor}', '${numero_partido}');`, function(error, results, fields){
         if (error) throw error
             //senão esta conectado!
     })
 
     var html_saida = "Operação realizada com sucesso"
     html_saida = html_saida + "<br />"
-    html_saida = html_saida + "<a href='/administrador'>Voltar</a> "
+    html_saida = html_saida + "<a href='/eleitor'>Voltar</a> "
 
     res.send(html_saida)
+})
+
+app.get('/apuracao', function (req, res){
+    res.sendFile(path.join(__dirname, 'public', 'apuracao-votos.html'))
+})
+
+app.get('/apuracao/dados', async function(req, res) {
+    try{
+        const client = await pool.connect();
+        const result = await client.query(`SELECT numero_partido, count(*) AS qtd_votos FROM votos GROUP BY numero_partido ORDER BY qtd_votos DESC`)
+
+        const apuracao = result.rows.map(row => ({
+            numero_partido: row.numero_partido,
+            qtd_votos: parseInt(row.qtd_votos)
+          }))
+      
+          const votosValidos = apuracao.filter(v => v.numero_partido !== 'BR' && v.numero_partido !== 'NU')
+          const votosBrancos = apuracao.find(v => v.numero_partido === 'BR')?.qtd_votos || 0
+      
+          let vencedor = null
+      
+          if (votosValidos.length > 1) {
+            vencedor = votosValidos[0]
+          } else if (votosValidos.length === 1) {
+            if (votosValidos[0].qtd_votos > votosBrancos) {
+              vencedor = votosValidos[0]
+            }
+          }
+      
+          // Buscar nome do vencedor se houver
+          if (vencedor) {
+            const resultNome = await client.query(
+              'SELECT nome FROM candidatos WHERE numero_partido = $1',
+              [vencedor.numero_partido]
+            )
+            console.log('Resultado da consulta do nome:', resultNome.rows)
+          
+            vencedor.nome = resultNome.rows[0]?.nome || 'Desconhecido'
+          }
+          
+
+          res.json({ apuracao, vencedor })
+    
+    } catch (err) {
+        console.error('Erro ao executar consulta: ', err)
+        res.json({ error: 'Erro interno do servidor '})
+    }
+    
+    
 })
 
 

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Apuração dos votos </title>
+    </head>
+    <body>
+        <h1>Sistema de votação web</h1>
+        <h2>Apuração dos votos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Numero do partido</th>
+                    <th>Total de votos</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-apuracao">
+                <!-- A apuração será inserida aqui -->
+            </tbody>
+        </table>
+        <p>
+            <a href="/">Voltar</a>
+        </p>
+
+        <script>
+        async function carregarApuracao() {
+        try {
+            const response = await fetch('/apuracao/dados')
+            const { apuracao, vencedor } = await response.json()
+
+            const tabela = document.getElementById('tabela-apuracao')
+            tabela.innerHTML = ''
+
+            apuracao.forEach(item => {
+            const row = `<tr>
+                            <td>${item.numero_partido}</td>
+                            <td>${item.qtd_votos}</td>
+                        </tr>`
+            tabela.innerHTML += row
+            })
+
+            const resultado = document.createElement('p')
+            resultado.style.marginTop = '20px'
+
+            if (vencedor) {
+                resultado.innerHTML = `<strong>RESULTADO:</strong> Está eleito(a) ${vencedor.nome} (${vencedor.numero_partido}).`
+            } else {
+                resultado.innerHTML = `<strong>Nenhum candidato foi eleito.</strong>`
+            }
+
+            document.body.appendChild(resultado)
+
+        } catch (error) {
+            console.error('Erro ao carregar a apuração:', error)
+        }
+        }
+
+
+
+        window.onload = carregarApuracao
+    </script>
+    </body>
+</html>
