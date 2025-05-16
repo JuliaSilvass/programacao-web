@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Procesamento de dados de form</title>
+</head>
+<body>
+
+    <h2>Pizzaria do Luigi</h2>
+    
+    <h3>Pedidos Online</h3>
+
+    <form action="/processar-pedido" method="POST" onsubmit="return validarForm_confirmarPedido()">
+
+        Seu nome:
+        <br />
+        <input id="cliente_nome" type="text" name="cliente_nome" value="">
+
+        <br />
+        Seu endereço: <input id="cliente_endereco" type="text" name="cliente_endereco" value="" size="60">
+       <br />
+        Bairro:
+        
+        <select name="cliente_bairro">
+            <optionselected="selected">Centro</option>
+            <option>Morgado Rosa</option>
+            <option>Getúlio Vargas</option>
+            <option>Tarumã</option>
+            <option>Passo das Pedras</option>
+        </select>
+
+        <br />
+        <br />
+        Tipo de entrega:
+        <br />
+        <input type="radio" checked="checked" name="tipo_entrega" value="por_motoboy">
+        por motoboy (R$ 10)
+        <br />
+        <input type="radio" name="tipo_entrega" value="balcao">
+        balção (gratuito - o(a) cliente pega pessoalmente no balção da loja)
+         
+        <br />
+        <br />
+        Produtos
+        <br />
+        <br /> 
+
+        <input id="item_pizza_grande" type="checkbox" name="item_pizza_grande" value="sim">
+        Pizza grande - R$ 60/unidade   - Quantidade: <input id="qtd_pizza_grande" type="number" name="qtd_pizza_grande" value="">
+
+        <br /> 
+        <br /> 
+        <input id="item_pizza_media" type="checkbox" name="item_pizza_media" value="sim">
+        Pizza média  - R$ 50/unidade   - Quantidade: <input id="qtd_pizza_media" type="number" name="qtd_pizza_media" value="">
+
+        <br /> 
+        <br /> 
+        <input id="item_pizza_pequena" type="checkbox" name="item_pizza_pequena" value="sim">
+        Pizza pequena - R$ 40/unidade - Quantidade: <input id="qtd_pizza_pequena" type="number" name="qtd_pizza_pequena" value="">
+
+        <br />
+        <br /> 
+        <input id="item_refrigerante_2L" type="checkbox" name="item_refrigerante_2L" value="sim">
+        Refrigerane 2 litos - R$ 10/unidade - Quantidade: <input id="qtd_refrigerante_2L" type="number" name="qtd_refrigerante_2L" value="">
+
+
+        <br />
+        <br />
+        <button type="submit">Enviar o pedido</button>
+
+
+    </form>
+    
+</body>
+<script src="simulador.js"></script>
+</html>

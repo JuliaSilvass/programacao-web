@@ -1,0 +1,36 @@
+<h2>Lista de Pedidos</h2>
+
+{{#if pedidos.length}}
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr>
+      <th style="color: red;">Código</th>
+      <th>Nome</th>
+      <th>Endereço</th>
+      <th>Grandes</th>
+      <th>Médias</th>
+      <th>Pequenas</th>
+      <th>Tele-entrega</th>
+      <th>Total a Pagar</th>
+      <th>Data e Hora</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each pedidos}}
+    <tr>
+      <td style="color: red;"><strong>{{codigo_pedido}}</strong></td>
+      <td>{{cliente_nome}}</td>
+      <td>{{cliente_endereco}}</td>
+      <td>{{qtd_pizzas_grandes}}</td>
+      <td>{{qtd_pizzas_medias}}</td>
+      <td>{{qtd_pizzas_pequenas}}</td>
+      <td>{{#if tele_entrega}}Sim{{else}}Não{{/if}}</td>
+      <td>R$ {{total_a_pagar}}</td>
+      <td>{{data_hora}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+{{else}}
+<p>Nenhum pedido encontrado.</p>
+{{/if}}
