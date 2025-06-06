@@ -1,0 +1,22 @@
+<table border="1">
+  <tr>
+    <th>Código</th>
+    <th>Nome</th>
+    <th>Categoria</th>
+    <th>Preço</th>
+    <th>Ações</th>
+  </tr>
+
+  {{#each produtos}}
+    <tr>
+      <td>{{this.codigo}}</td>
+      <td>{{this.nome}}</td>
+      <td>{{this.categoria}}</td>
+      <td>R$ {{this.preco}}</td>
+      <td>
+        <a href="/produtos/{{this.codigo}}">Consultar</a> |
+        <a href="/produtos/editar/{{this.codigo}}">Editar</a>
+      </td>
+    </tr>
+  {{/each}}
+</table>
