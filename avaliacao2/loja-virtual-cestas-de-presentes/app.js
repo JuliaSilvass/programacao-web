@@ -16,6 +16,7 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 app.engine('handlebars', hbs.engine);
+app.use(express.json());
 
 
 
@@ -81,19 +82,39 @@ const Pedido = sequelize.define('Pedido', {
     primaryKey: true,
     autoIncrement: true
   },
-  data_pedido: {
-    type: DataTypes.DATE,
+  data_criacao: {
+    type: DataTypes.DATEONLY,
     allowNull: false
   },
-  nome_cliente: {
+  cliente_nome: {
     type: DataTypes.STRING(100),
     allowNull: false
   },
-  cpf_cnpj_cliente: {
-    type: DataTypes.STRING(20), // CPF ou CNPJ
+  cliente_cpf_cnpj: {
+    type: DataTypes.STRING(20),
     allowNull: false
   },
-  valor_total: {
+  cliente_telefone: {
+    type: DataTypes.STRING(20),
+    allowNull: false
+  },
+  entrega_destinatario_nome: {
+    type: DataTypes.STRING(100),
+    allowNull: false
+  },
+  entrega_destinatario_endereco: {
+    type: DataTypes.STRING(255),
+    allowNull: false
+  },
+  entrega_data_horario: {
+    type: DataTypes.STRING(25),
+    allowNull: false
+  },
+  lista_codigos_produtos: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  preco_total: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false
   }
@@ -101,6 +122,7 @@ const Pedido = sequelize.define('Pedido', {
   tableName: 'pedidos',
   timestamps: false
 });
+
 
 //app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({ extended: true }))
@@ -301,6 +323,155 @@ app.get('/pedidos/listar-todos', async (req, res) => {
     res.status(500).send('Erro ao listar pedidos.');
   }
 });
+
+//Rota para consultar pedido
+app.get('/pedidos/:codigoPedido', async (req, res) => {
+  try {
+    const codigo = parseInt(req.params.codigoPedido);
+
+    const pedidoRaw = await Pedido.findByPk(codigo);
+
+    if (!pedidoRaw) {
+      return res.status(404).send('Pedido não encontrado.<br><a href="/pedidos/listar-todos">Voltar</a>');
+    }
+
+    const pedido = pedidoRaw.get({ plain: true });
+
+    // Transforma a string de IDs em lista (ex: "1,2,2,3" → [1,2,2,3])
+    const codigosProdutos = pedido.lista_codigos_produtos
+      .split(',')
+      .map(str => parseInt(str.trim()));
+
+    // Busca todos os produtos com os códigos envolvidos
+    const produtos = await Produto.findAll({
+      where: {
+        codigo: codigosProdutos
+      }
+    });
+
+    // Mapeia os produtos encontrados e conta repetições
+    const listaProdutos = codigosProdutos.map(cod => {
+      const prod = produtos.find(p => p.codigo === cod);
+      return prod ? prod.get({ plain: true }) : null;
+    }).filter(p => p !== null);
+
+    res.render('consultar-pedido', {
+      pedido,
+      produtos: listaProdutos,
+      titulo: `Pedido #${pedido.codigo}`
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erro ao consultar pedido.<br><a href="/pedidos/listar-todos">Voltar</a>');
+  }
+});
+
+// Questões 09 e 10
+// Para usar as API's tem que usar a senha e content-type no headers do thunder client. 
+//| Key            | Value              |
+//| -------------- | ------------------ |
+//| `x-api-senha`  | `7p5w3x8$3`        |
+//| `Content-Type` | `application/json` |
+
+const SENHA_API = '7p5w3x8$3';
+
+function autenticarSenha(req, res, next) {
+  const senha = req.headers['x-api-senha'];
+
+  if (!senha) {
+    return res.status(401).json({ mensagem: 'Senha não informada' });
+  }
+
+  if (senha !== SENHA_API) {
+    return res.status(401).json({ mensagem: 'Senha inválida' });
+  }
+
+  // Senha correta, segue para a rota
+  next();
+}
+
+
+const mapaTiposCategorias = {
+  'cestas': 'Cesta',
+  'itens-comestiveis': 'Item comestível',
+  'bebidas': 'Bebida',
+  'decoracao': 'Decoração',
+  'presentes-tematicos': 'Presente temático',
+  'cartoes-de-mensagens': 'Cartão de mensagem'
+};
+
+app.get('/produtos/categoria/:tipo', autenticarSenha, async (req, res) => {
+  try {
+    const tipo = req.params.tipo;
+    const categoria = mapaTiposCategorias[tipo];
+
+    if (!categoria) {
+      return res.status(400).json({ mensagem: 'Tipo de categoria inválido' });
+    }
+
+    const produtosRaw = await Produto.findAll({
+      where: { categoria }
+    });
+
+    const produtos = produtosRaw.map(prod => {
+      const p = prod.get({ plain: true });
+
+      // Adiciona o link completo da foto
+      return {
+        ...p,
+        foto: `loja-virtual-cestas-de-presentes/fotos_produtos/${p.foto}`
+      };
+    });
+
+    res.json(produtos);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ mensagem: 'Erro ao buscar produtos' });
+  }
+});
+
+app.post('/pedidos/cadastrar', autenticarSenha, async (req, res) => {
+  try {
+    const {
+      cliente_nome,
+      cliente_cpf_cnpj,
+      cliente_telefone,
+      entrega_destinatario_nome,
+      entrega_destinatario_endereco,
+      entrega_data_horario,
+      lista_codigos_produtos,
+      preco_total
+    } = req.body;
+
+    // Validação simples: campos obrigatórios não podem estar em branco
+    if (
+      !cliente_nome || !cliente_cpf_cnpj || !cliente_telefone ||
+      !entrega_destinatario_nome || !entrega_destinatario_endereco ||
+      !entrega_data_horario || !lista_codigos_produtos || !preco_total
+    ) {
+      return res.status(400).json({ mensagem: 'Erro: o pedido não pode ter campos de dados em branco' });
+    }
+
+    await Pedido.create({
+      data_criacao: new Date().toISOString().split('T')[0], // formato YYYY-MM-DD
+      cliente_nome,
+      cliente_cpf_cnpj,
+      cliente_telefone,
+      entrega_destinatario_nome,
+      entrega_destinatario_endereco,
+      entrega_data_horario,
+      lista_codigos_produtos,
+      preco_total: parseFloat(preco_total)
+    });
+
+    res.status(200).json({ mensagem: 'Pedido cadastrado com sucesso. Entraremos em contato.' });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ mensagem: 'Erro ao cadastrar o pedido' });
+  }
+});
+
 
 
 app.listen(port, servIp, function () {

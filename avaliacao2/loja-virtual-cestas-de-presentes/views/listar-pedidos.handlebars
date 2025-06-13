@@ -15,11 +15,11 @@
     {{#each pedidos}}
       <tr>
         <td>{{this.codigo}}</td>
-        <td>{{this.data_pedido}}</td>
-        <td>{{this.nome_cliente}}</td>
-        <td>{{this.cpf_cnpj_cliente}}</td>
-        <td>R$ {{this.valor_total}}</td>
-        <td><a href="/produtos/consultar/{{this.codigo}}">Consultar</a></td>
+        <td>{{this.data_criacao}}</td>
+        <td>{{this.cliente_nome}}</td>
+        <td>{{this.cliente_cpf_cnpj}}</td>
+        <td>R$ {{this.preco_total}}</td>
+        <td><a href="/pedidos/{{this.codigo}}">Consultar</a></td>
       </tr>
     {{/each}}
   </tbody>
